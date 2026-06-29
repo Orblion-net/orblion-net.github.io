@@ -357,7 +357,7 @@
         player.append(image, name);
         players.appendChild(player);
 
-        fetch(`https://api.mojang.com/user/profile/${uuid}`)
+        fetch(`https://playerdb.co/api/player/minecraft/${uuid}`)
           .then((response) => {
             if (!response.ok) {
               throw new Error(`Name lookup failed: ${response.status}`);
@@ -365,8 +365,8 @@
 
             return response.json();
           })
-          .then((profile) => {
-            name.textContent = profile.name || "Unknown";
+          .then((result) => {
+            name.textContent = result.data?.player?.username || "Unknown";
           })
           .catch(() => {
             name.textContent = "Unknown";
