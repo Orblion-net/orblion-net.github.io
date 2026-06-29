@@ -22,10 +22,10 @@
         min-height: 100vh;
         overflow: hidden;
         background:
-          radial-gradient(circle at var(--mx) var(--my), rgba(255, 61, 242, 0.34), transparent 20rem),
-          radial-gradient(circle at 12% 18%, rgba(38, 246, 255, 0.2), transparent 22rem),
-          radial-gradient(circle at 80% 78%, rgba(188, 255, 79, 0.13), transparent 18rem),
-          linear-gradient(135deg, #08040f 0%, #0d0718 42%, #030305 100%);
+          radial-gradient(circle at var(--mx) var(--my), rgba(140, 54, 255, 0.3), transparent 22rem),
+          radial-gradient(circle at 18% 22%, rgba(91, 33, 182, 0.26), transparent 24rem),
+          radial-gradient(circle at 82% 76%, rgba(76, 29, 149, 0.2), transparent 22rem),
+          linear-gradient(135deg, #07030d 0%, #12051f 46%, #030106 100%);
       }
 
       body::before,
@@ -63,6 +63,27 @@
         padding: 28px;
       }
 
+      .snow {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .flake {
+        position: absolute;
+        top: -12vh;
+        left: var(--x);
+        width: var(--size);
+        height: var(--size);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, var(--alpha));
+        box-shadow: 0 0 calc(var(--size) * 4) rgba(255, 255, 255, 0.58);
+        filter: blur(var(--blur));
+        animation: snowfall var(--duration) linear var(--delay) infinite;
+      }
+
       .stage {
         position: relative;
         width: min(1180px, 100%);
@@ -78,7 +99,7 @@
         aspect-ratio: 1;
         border-radius: 50%;
         background:
-          conic-gradient(from 130deg, transparent, rgba(255, 61, 242, 0.52), rgba(38, 246, 255, 0.5), transparent 62%);
+          conic-gradient(from 130deg, transparent, rgba(168, 85, 247, 0.48), rgba(88, 28, 135, 0.42), transparent 62%);
         filter: blur(30px);
         opacity: 0.72;
         animation: spin 18s linear infinite;
@@ -91,8 +112,8 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 50%;
         box-shadow:
-          0 0 42px rgba(255, 61, 242, 0.22),
-          inset 0 0 38px rgba(38, 246, 255, 0.12);
+          0 0 42px rgba(168, 85, 247, 0.24),
+          inset 0 0 38px rgba(91, 33, 182, 0.2);
         animation: pulse 4.5s ease-in-out infinite;
       }
 
@@ -108,7 +129,7 @@
       .ring::after {
         inset: 20%;
         border-style: solid;
-        border-color: rgba(188, 255, 79, 0.18);
+        border-color: rgba(192, 132, 252, 0.18);
       }
 
       img {
@@ -120,8 +141,8 @@
         background: transparent;
         filter:
           drop-shadow(0 18px 18px rgba(0, 0, 0, 0.7))
-          drop-shadow(0 0 28px rgba(255, 61, 242, 0.64))
-          drop-shadow(0 0 42px rgba(38, 246, 255, 0.18));
+          drop-shadow(0 0 28px rgba(168, 85, 247, 0.58))
+          drop-shadow(0 0 42px rgba(88, 28, 135, 0.28));
         animation: hover 5s ease-in-out infinite;
         transform: perspective(900px) rotateX(calc((var(--my-num) - 0.5) * -5deg)) rotateY(calc((var(--mx-num) - 0.5) * 7deg));
         transition: transform 180ms ease-out;
@@ -161,6 +182,16 @@
         }
       }
 
+      @keyframes snowfall {
+        from {
+          transform: translate3d(0, 0, 0);
+        }
+
+        to {
+          transform: translate3d(var(--drift), 116vh, 0);
+        }
+      }
+
       @media (max-width: 680px) {
         body {
           overflow: auto;
@@ -187,6 +218,8 @@
     </style>
   </head>
   <body>
+    <div class="snow" aria-hidden="true"></div>
+
     <main>
       <section class="stage">
         <div class="halo"></div>
@@ -197,6 +230,24 @@
 
     <script>
       const root = document.documentElement;
+      const snow = document.querySelector(".snow");
+      const flakeCount = 90;
+
+      for (let index = 0; index < flakeCount; index += 1) {
+        const flake = document.createElement("span");
+        const size = Math.random() * 4 + 1;
+
+        flake.className = "flake";
+        flake.style.setProperty("--x", `${Math.random() * 100}%`);
+        flake.style.setProperty("--size", `${size}px`);
+        flake.style.setProperty("--alpha", `${Math.random() * 0.58 + 0.18}`);
+        flake.style.setProperty("--blur", `${Math.random() * 1.6}px`);
+        flake.style.setProperty("--drift", `${(Math.random() - 0.5) * 180}px`);
+        flake.style.setProperty("--duration", `${Math.random() * 12 + 10}s`);
+        flake.style.setProperty("--delay", `${Math.random() * -24}s`);
+
+        snow.appendChild(flake);
+      }
 
       window.addEventListener("pointermove", (event) => {
         const x = event.clientX / window.innerWidth;
