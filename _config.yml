@@ -1,0 +1,10 @@
+title: Orblion
+description: Placeholder site for Orblion.
+markdown: kramdown
+theme: null
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
