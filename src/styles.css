@@ -45,6 +45,28 @@ body::before {
   padding: clamp(28px, 5vw, 72px) 20px;
 }
 
+.assetsButton {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 3;
+  translate: -50% 0;
+  min-height: 34px;
+  padding: 7px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(10, 7, 16, 0.64);
+  color: rgba(255, 255, 255, 0.66);
+  font: 700 0.82rem/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+}
+
+.assetsButton:hover {
+  border-color: rgba(139, 92, 246, 0.38);
+  color: rgba(255, 255, 255, 0.92);
+}
+
 .page {
   width: min(1180px, 100%);
   display: grid;
@@ -133,6 +155,158 @@ body::before {
   overflow-wrap: anywhere;
 }
 
+.explorerSite {
+  align-items: start;
+}
+
+.explorer {
+  width: min(980px, 100%);
+  display: grid;
+  gap: 16px;
+}
+
+.explorerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 18px;
+}
+
+.explorerHeader h1,
+.explorerHeader p {
+  margin: 0;
+}
+
+.explorerHeader h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+.eyebrow {
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ghostButton,
+.breadcrumbs button,
+.fileRow {
+  font: inherit;
+}
+
+.ghostButton {
+  min-height: 38px;
+  padding: 8px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.82);
+  cursor: pointer;
+}
+
+.ghostButton:hover {
+  border-color: rgba(139, 92, 246, 0.38);
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.breadcrumbs button {
+  min-height: 30px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.breadcrumbs button::before {
+  content: "/";
+  margin-right: 7px;
+  color: rgba(139, 92, 246, 0.72);
+}
+
+.explorerMeta {
+  display: flex;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.explorerMeta span {
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.026);
+}
+
+.fileList {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.fileRow {
+  width: 100%;
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.075);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.fileRow:last-child {
+  border-bottom: 0;
+}
+
+.fileRow:hover {
+  background: rgba(139, 92, 246, 0.07);
+}
+
+.fileIcon {
+  color: rgba(139, 92, 246, 0.9);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.fileName {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileInfo {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.emptyState {
+  margin: 0;
+  padding: 22px 16px;
+  color: var(--muted);
+}
+
 @media (max-width: 980px) {
   .players {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -164,5 +338,17 @@ body::before {
 
   .player img {
     height: min(100%, 250px);
+  }
+
+  .explorerHeader {
+    display: grid;
+  }
+
+  .fileRow {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .fileInfo {
+    display: none;
   }
 }
