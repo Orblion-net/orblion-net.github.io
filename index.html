@@ -136,13 +136,12 @@
         position: relative;
         z-index: 2;
         display: block;
-        max-width: min(92vw, 1200px);
+        width: min(82vw, 980px);
+        max-width: 100%;
         height: auto;
         background: transparent;
-        filter:
-          drop-shadow(0 18px 18px rgba(0, 0, 0, 0.7))
-          drop-shadow(0 0 28px rgba(168, 85, 247, 0.58))
-          drop-shadow(0 0 42px rgba(88, 28, 135, 0.28));
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
         animation: hover 5s ease-in-out infinite;
         transform: perspective(900px) rotateX(calc((var(--my-num) - 0.5) * -5deg)) rotateY(calc((var(--mx-num) - 0.5) * 7deg));
         transition: transform 180ms ease-out;
@@ -224,7 +223,7 @@
       <section class="stage">
         <div class="halo"></div>
         <div class="ring"></div>
-        <img src="png/tablist-banner.png" alt="Orblion">
+        <img src="png/logo.png" alt="Orblion">
       </section>
     </main>
 
