@@ -336,33 +336,28 @@
       const snow = document.querySelector(".snow");
       const players = document.querySelector(".players");
       const flakeCount = 90;
-      const playerList = [
-        { uuid: "4554de35-091a-44ee-b6f5-fa718155e2b4", name: "Blulife" },
-        { uuid: "7c4b9eb7-0c0d-4149-90c5-b6d63b86db8e", name: "ItsBromil" },
-        { uuid: "a09a2541-2438-4cb9-83b1-d64804e44fda", name: "Nice_Fazo" },
-        { uuid: "e2e5c9b4-a79f-4f20-8a75-ecc71cf54cd9", name: "FenceeeGateee" }
+      const playerUuids = [
+        "4554de35-091a-44ee-b6f5-fa718155e2b4",
+        "7c4b9eb7-0c0d-4149-90c5-b6d63b86db8e",
+        "a09a2541-2438-4cb9-83b1-d64804e44fda",
+        "e2e5c9b4-a79f-4f20-8a75-ecc71cf54cd9"
       ];
 
-      function rawUuid(uuid) {
-        return uuid.replaceAll("-", "");
-      }
-
-      function createPlayer(playerData) {
+      function createPlayer(uuid) {
         const player = document.createElement("div");
         const image = document.createElement("img");
         const name = document.createElement("span");
-        const uuid = playerData.uuid;
 
         player.className = "player";
         image.src = `https://avatars.oc.tc/renders/body/${uuid}?scale=10&overlay`;
         image.alt = "";
         name.className = "name";
-        name.textContent = playerData.name;
+        name.textContent = "Loading";
 
         player.append(image, name);
         players.appendChild(player);
 
-        fetch(`https://playerdb.co/api/player/minecraft/${uuid}`)
+        fetch(`https://api.mojang.com/user/profile/${uuid}`)
           .then((response) => {
             if (!response.ok) {
               throw new Error(`Name lookup failed: ${response.status}`);
@@ -370,15 +365,15 @@
 
             return response.json();
           })
-          .then((result) => {
-            name.textContent = result.data?.player?.username || playerData.name;
+          .then((profile) => {
+            name.textContent = profile.name || "Unknown";
           })
           .catch(() => {
-            name.textContent = playerData.name;
+            name.textContent = "Unknown";
           });
       }
 
-      playerList.forEach(createPlayer);
+      playerUuids.forEach(createPlayer);
 
       for (let index = 0; index < flakeCount; index += 1) {
         const flake = document.createElement("span");
