@@ -1,12 +1,242 @@
 <!doctype html>
 <html lang="de">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Orblion</title>
+    <link rel="icon" href="png/icon.png" type="image/png">
+    <style>
+      :root {
+        --bg: #08060d;
+        --text: #f4f1f8;
+        --muted: #9b93a8;
+        --purple: #8b5cf6;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.16), transparent 34rem),
+          linear-gradient(180deg, #10091a 0%, var(--bg) 48%, #050408 100%);
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        content: "";
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+        background-size: 72px 72px;
+        mask-image: linear-gradient(to bottom, black, transparent 76%);
+      }
+
+      .site {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: clamp(28px, 5vw, 72px) 20px;
+      }
+
+      .page {
+        width: min(1180px, 100%);
+        display: grid;
+        justify-items: center;
+        gap: clamp(28px, 5vw, 54px);
+      }
+
+      .logo {
+        display: block;
+        width: min(760px, 88vw);
+        height: auto;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        filter: drop-shadow(0 22px 36px rgba(0, 0, 0, 0.34));
+      }
+
+      .team {
+        width: 100%;
+        display: grid;
+        gap: 22px;
+      }
+
+      .teamHeader {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 0 4px;
+      }
+
+      .teamHeader h1,
+      .teamHeader p {
+        margin: 0;
+      }
+
+      .teamHeader h1 {
+        font-size: clamp(1.25rem, 2.4vw, 2rem);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .teamHeader p {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .players {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .player {
+        min-width: 0;
+        display: grid;
+        grid-template-rows: 310px auto;
+        justify-items: center;
+        gap: 14px;
+        padding: 0 8px;
+        overflow: hidden;
+      }
+
+      .player img {
+        align-self: end;
+        display: block;
+        width: auto;
+        height: min(100%, 300px);
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.36));
+      }
+
+      .name {
+        max-width: 100%;
+        min-height: 34px;
+        display: inline-grid;
+        place-items: center;
+        padding: 7px 13px;
+        border: 1px solid rgba(139, 92, 246, 0.24);
+        border-radius: 999px;
+        background: rgba(139, 92, 246, 0.08);
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 0.9rem;
+        font-weight: 750;
+        line-height: 1.15;
+        overflow-wrap: anywhere;
+      }
+
+      @media (max-width: 980px) {
+        .players {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 560px) {
+        .site {
+          padding: 24px 14px;
+        }
+
+        .logo {
+          width: min(520px, 94vw);
+        }
+
+        .teamHeader {
+          display: grid;
+          justify-items: center;
+          text-align: center;
+        }
+
+        .players {
+          grid-template-columns: 1fr;
+        }
+
+        .player {
+          grid-template-rows: 260px auto;
+        }
+
+        .player img {
+          height: min(100%, 250px);
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <main class="site">
+      <div class="page">
+        <img class="logo" src="png/logo.png" alt="Orblion">
+
+        <section class="team" aria-label="Administratoren">
+          <div class="teamHeader">
+            <h1>Administratoren</h1>
+            <p>Orblion Network</p>
+          </div>
+
+          <div class="players" id="players"></div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const playerUuids = [
+        "4554de35-091a-44ee-b6f5-fa718155e2b4",
+        "7c4b9eb7-0c0d-4149-90c5-b6d63b86db8e",
+        "a09a2541-2438-4cb9-83b1-d64804e44fda",
+        "e2e5c9b4-a79f-4f20-8a75-ecc71cf54cd9"
+      ];
+
+      const players = document.querySelector("#players");
+
+      function playerRenderUrl(uuid) {
+        return `https://avatars.oc.tc/renders/body/${uuid}?scale=10&overlay`;
+      }
+
+      function createPlayer(uuid) {
+        const player = document.createElement("article");
+        const image = document.createElement("img");
+        const name = document.createElement("span");
+
+        player.className = "player";
+        image.src = playerRenderUrl(uuid);
+        image.alt = "";
+        image.loading = "lazy";
+        name.className = "name";
+        name.textContent = "Loading";
+
+        player.append(image, name);
+        players.appendChild(player);
+
+        fetch(`https://playerdb.co/api/player/minecraft/${uuid}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Name lookup failed: ${response.status}`);
+            }
+
+            return response.json();
+          })
+          .then((result) => {
+            name.textContent = result.data?.player?.username || "Unknown";
+          })
+          .catch(() => {
+            name.textContent = "Unknown";
+          });
+      }
+
+      playerUuids.forEach(createPlayer);
+    </script>
   </body>
 </html>
